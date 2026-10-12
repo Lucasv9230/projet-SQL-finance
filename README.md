@@ -2,7 +2,8 @@
 
 > **Matière :** SQL avancé · Ycode A2627_4728 · Bachelor 2 (2026-2027)  
 > **Formateur :** Luc Charlopeau  
-> **Livrables :** `projet.sql` et `README.md`
+> **Livrables :** `projet.sql` et `README.md`  
+> **Déploiement :** https://projetsqlfinance.vercel.app/
 
 Plateforme de courtage financier et de négociation de titres cotés en CAD, gérant les comptes d'espèces des clients, leurs portefeuilles d'actions et l'exécution automatisée des ordres d'achat et de vente avec contrôle d'intégrité strict.
 
