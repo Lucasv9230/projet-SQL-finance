@@ -27,7 +27,6 @@ SELECT
     'demo.client.' || lpad(numero::text, 5, '0') || '@finance.test',
     now() - make_interval(days => 365 + ((numero * 37) % 1095))
 FROM generate_series(1, 500) AS serie(numero);
-FROM generate_series(1, 500) AS numero;
 
 -- Les soldes en CAD sont suffisants pour les achats de demonstration.
 INSERT INTO public.comptes_especes (client_id, solde, devise, date_ouverture)
@@ -96,11 +95,9 @@ ordres AS (
             WHEN numero_ordre <= 20
                 THEN 5 + ((clients_demo.numero_client * 13 + numero_ordre * 7) % 6)
             ELSE 1 + ((clients_demo.numero_client * 11 + (numero_ordre - 20) * 3) % 4)
-        END AS quantite,
-        numero_ordre
+        END AS quantite
     FROM clients_demo
     JOIN comptes_demo USING (client_id)
-    CROSS JOIN generate_series(1, 40) AS numero_ordre
     CROSS JOIN generate_series(1, 40) AS serie(numero_ordre)
 )
 INSERT INTO public.transactions (
