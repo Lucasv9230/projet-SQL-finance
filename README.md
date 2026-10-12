@@ -96,6 +96,22 @@ Les suppressions de clients, comptes et titres référencés sont restreintes af
 de préserver la cohérence de l'historique. Les positions et les transactions
 sont reliées aux titres par `titre_id`.
 
-Le script couvre uniquement le schéma; les données, la procédure et son trigger,
-les vues, les rôles, les index et leurs mesures de performance restent à ajouter
-par les membres responsables de ces parties.
+Le script couvre uniquement le schéma. Les données sont générées par
+`sql/02_donnees.sql`. Le membre 3 ajoute `sql/03_procedure_trigger.sql`, qui
+crée la procédure `public.executer_ordre` et le trigger de contrôle des
+insertions dans `public.transactions`. Il faut exécuter les scripts dans
+l’ordre `01_schema.sql`, `02_donnees.sql`, puis `03_procedure_trigger.sql`.
+
+La procédure accepte le client, le compte espèces, le titre, le type (`ACHAT`
+ou `VENTE`) et la quantité. Le trigger utilise le cours actuel du titre,
+contrôle le compte et la devise, vérifie les fonds ou la position disponible,
+puis met à jour le solde espèces et la position dans la même transaction que
+l’ordre. Il protège également les écritures directes dans `transactions`.
+
+Pour vérifier ces comportements après l’installation, exécuter
+`sql/04_tests_integrite.sql`. Le script teste les achats, le calcul du prix
+moyen, une vente partielle, le contrôle des insertions directes et plusieurs
+rejets d’intégrité. Il annule ses données de test à la fin.
+
+Les vues, les rôles, les index et leurs mesures de performance restent à
+ajouter par les membres responsables de ces parties.
