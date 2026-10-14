@@ -1,6 +1,3 @@
--- Run after sql/03_procedure_trigger.sql.
--- All fixture rows and executed orders are rolled back at the end.
-
 BEGIN;
 
 DO $$
@@ -75,7 +72,6 @@ BEGIN
         RAISE EXCEPTION 'Echec du test : vente, position ou solde incorrect.';
     END IF;
 
-    -- A direct INSERT must also use the title's current price and update balances.
     INSERT INTO public.transactions (
         client_id, compte_id, titre_id, type, quantite, prix_unitaire
     )

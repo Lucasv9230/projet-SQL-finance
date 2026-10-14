@@ -21,7 +21,6 @@ async function run() {
   await client.connect();
   console.log('Connecté avec succès !');
 
-  // Vérifier si 01_schema.sql doit être exécuté
   const checkSchema = await client.query("SELECT to_regclass('public.clients') AS has_clients");
   if (!checkSchema.rows[0].has_clients) {
     console.log('\nExécution de sql/01_schema.sql...');
@@ -32,7 +31,6 @@ async function run() {
     console.log('\n Schéma 01 déjà en place.');
   }
 
-  // Vérifier si 02_donnees.sql doit être exécuté
   const checkData = await client.query('SELECT count(*) FROM public.clients');
   if (parseInt(checkData.rows[0].count, 10) === 0) {
     console.log('\nExécution de sql/02_donnees.sql...');
@@ -43,19 +41,16 @@ async function run() {
     console.log(`\n Données déjà présentes (${checkData.rows[0].count} clients).`);
   }
 
-  // Exécution de 03_procedure_trigger.sql
   console.log('\nExécution de sql/03_procedure_trigger.sql...');
   const sql3 = fs.readFileSync(path.join(rootDir, 'sql/03_procedure_trigger.sql'), 'utf-8');
   await client.query(sql3);
   console.log(' sql/03_procedure_trigger.sql exécuté.');
 
-  // Exécution de 04_tests_integrite.sql (pour valider que tout est 100% fonctionnel)
   console.log('\nExécution des tests de validation sql/04_tests_integrite.sql...');
   const sql4 = fs.readFileSync(path.join(rootDir, 'sql/04_tests_integrite.sql'), 'utf-8');
   await client.query(sql4);
   console.log(' sql/04_tests_integrite.sql validé avec succès (ROLLBACK automatique de test).');
 
-  // Stats finales
   const resClients = await client.query('SELECT count(*) FROM public.clients');
   const resTitres = await client.query('SELECT count(*) FROM public.titres');
   const resPositions = await client.query('SELECT count(*) FROM public.portefeuilles_positions');

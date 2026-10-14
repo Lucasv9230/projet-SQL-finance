@@ -45,7 +45,6 @@ async function findCorrectPooler() {
         await client.end();
         return host;
       }
-      // tenant not found or timeout
     }
   }
   console.log('Aucune région ne correspond.');

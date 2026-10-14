@@ -17,14 +17,11 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  // Navigation (3 onglets essentiels)
-  const [activeTab, setActiveTab] = useState('portfolio'); // 'portfolio', 'market', 'history'
+  const [activeTab, setActiveTab] = useState('portfolio');
 
-  // Gestion des devises : 'EUR' par défaut, avec conversion vers 'CAD' / 'USD'
   const [currency, setCurrency] = useState('EUR');
-  const CAD_TO_EUR_RATE = 0.68; // 1 CAD ≈ 0.68 EUR
+  const CAD_TO_EUR_RATE = 0.68;
 
-  // Helper de formatage de devise
   const formatMoney = (amountInCad) => {
     if (amountInCad === null || amountInCad === undefined || isNaN(amountInCad)) {
       return currency === 'EUR' ? '0,00 €' : '0.00 $';
@@ -37,7 +34,6 @@ export default function App() {
     }
   };
 
-  // Données
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(1);
   const [currentClient, setCurrentClient] = useState(null);
@@ -48,16 +44,13 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [submittingOrder, setSubmittingOrder] = useState(false);
 
-  // Filtres marché
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState('ALL');
 
-  // Formulaire d'Ordre
   const [selectedTitre, setSelectedTitre] = useState(null);
   const [orderType, setOrderType] = useState('ACHAT');
   const [orderQuantity, setOrderQuantity] = useState(10);
 
-  // Notifications Toasts
   const [toasts, setToasts] = useState([]);
 
   const addToast = (type, title, message) => {
@@ -68,7 +61,6 @@ export default function App() {
     }, 4500);
   };
 
-  // 1. Chargement initial des clients et titres
   useEffect(() => {
     async function initData() {
       try {
@@ -108,7 +100,6 @@ export default function App() {
     initData();
   }, []);
 
-  // 2. Chargement des détails du client sélectionné
   const loadClientDetails = async (clientId) => {
     if (!clientId) return;
     try {
@@ -174,7 +165,6 @@ export default function App() {
     }
   }, [selectedClientId, clients]);
 
-  // Calculs financiers (en base CAD convertis à l'affichage)
   const soldeEspecesCad = compte ? Number(compte.solde) : 0;
   
   const valeurPortefeuilleTitresCad = positions.reduce((acc, p) => {
@@ -190,7 +180,6 @@ export default function App() {
   const pnlPourcentage = coutTotalAchatCad > 0 ? (pnlLatenteCad / coutTotalAchatCad) * 100 : 0;
   const valeurTotaleCompteCad = soldeEspecesCad + valeurPortefeuilleTitresCad;
 
-  // Filtrage titres
   const filteredTitres = titres.filter((t) => {
     const matchSearch =
       t.symbole.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -201,7 +190,6 @@ export default function App() {
 
   const sectorsList = ['ALL', ...new Set(titres.map((t) => t.secteur).filter(Boolean))];
 
-  // Exécution d'un ordre (déclenche la transaction & le trigger Supabase)
   const handleExecuteTrade = async (e) => {
     if (e) e.preventDefault();
     if (!compte || !selectedTitre || orderQuantity <= 0) {
@@ -255,7 +243,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* Toast notifications */}
+      {}
       <div className="toast-container">
         {toasts.map((t) => (
           <div key={t.id} className={`toast ${t.type}`}>
@@ -272,7 +260,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* HEADER */}
+      {}
       <header className="header">
         <div className="brand">
           <img
@@ -294,7 +282,7 @@ export default function App() {
         </div>
 
         <div className="header-actions">
-          {/* Bouton de conversion de Devise (€ / $) */}
+          {}
           <div className="currency-toggle">
             <button
               type="button"
@@ -314,7 +302,7 @@ export default function App() {
             </button>
           </div>
 
-          {/* Sélecteur de client */}
+          {}
           <div className="client-selector-card">
             <label>Investisseur :</label>
             <select
@@ -341,7 +329,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* NAVIGATION TABS (3 onglets essentiels) */}
+      {}
       <nav className="tabs-nav">
         <button
           className={`tab-btn ${activeTab === 'portfolio' ? 'active' : ''}`}
@@ -363,9 +351,9 @@ export default function App() {
         </button>
       </nav>
 
-      {/* STATS CARDS BAR */}
+      {}
       <div className="stats-grid">
-        {/* Solde Cash */}
+        {}
         <div className="stat-card">
           <div className="stat-header">
             <span className="stat-label">Liquidités Disponibles</span>
@@ -379,7 +367,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Valeur totale du compte */}
+        {}
         <div className="stat-card blue">
           <div className="stat-header">
             <span className="stat-label">Valeur Totale du Portefeuille</span>
@@ -393,7 +381,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* P&L Latente */}
+        {}
         <div className="stat-card purple">
           <div className="stat-header">
             <span className="stat-label">Plus/Moins-Value Latente</span>
@@ -415,7 +403,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Positions Détenues */}
+        {}
         <div className="stat-card">
           <div className="stat-header">
             <span className="stat-label">Lignes Détenues</span>
@@ -428,9 +416,8 @@ export default function App() {
         </div>
       </div>
 
-      {/* ====================================================================
-          TAB 1 : PORTEFEUILLE
-          ==================================================================== */}
+      {
+}
       {activeTab === 'portfolio' && (
         <div className="card-panel">
           <div className="panel-header">
@@ -541,12 +528,11 @@ export default function App() {
         </div>
       )}
 
-      {/* ====================================================================
-          TAB 2 : MARCHÉ & TRADING DESK
-          ==================================================================== */}
+      {
+}
       {activeTab === 'market' && (
         <div className="trading-layout">
-          {/* Liste des cotations du marché */}
+          {}
           <div className="card-panel" style={{ margin: 0 }}>
             <div className="panel-header">
               <div>
@@ -559,7 +545,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Barre de recherche et filtre secteur */}
+            {}
             <div className="market-search-bar">
               <div style={{ position: 'relative', flex: 1 }}>
                 <Search
@@ -648,7 +634,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Formulaire de Passage d'Ordre (Trading Desk) */}
+          {}
           <div className="order-box">
             <h3 className="order-box-title">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -657,7 +643,7 @@ export default function App() {
               <span className="badge badge-green">En Direct</span>
             </h3>
 
-            {/* Toggle ACHAT / VENTE */}
+            {}
             <div className="order-type-toggle">
               <button
                 type="button"
@@ -717,7 +703,7 @@ export default function App() {
                   />
                 </div>
 
-                {/* Résumé de l'Ordre */}
+                {}
                 <div className="order-summary">
                   <div className="summary-row">
                     <span>Prix unitaire officiel :</span>
@@ -763,9 +749,8 @@ export default function App() {
         </div>
       )}
 
-      {/* ====================================================================
-          TAB 3 : HISTORIQUE DES TRANSACTIONS
-          ==================================================================== */}
+      {
+}
       {activeTab === 'history' && (
         <div className="card-panel">
           <div className="panel-header">

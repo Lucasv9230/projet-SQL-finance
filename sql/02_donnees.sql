@@ -1,9 +1,5 @@
--- Jeu de donnees de demonstration pour la plateforme de courtage.
--- A executer une seule fois apres sql/01_schema.sql dans Supabase.
-
 BEGIN;
 
--- Evite de creer des doublons si le script est relance par erreur.
 DO $$
 BEGIN
     IF EXISTS (SELECT 1 FROM public.clients)
@@ -17,7 +13,6 @@ BEGIN
 END;
 $$;
 
--- Cree 500 clients avec des noms et des dates d'inscription varies.
 INSERT INTO public.clients (nom, prenom, email, date_inscription)
 SELECT
     (ARRAY['Tremblay', 'Gagnon', 'Roy', 'Cote', 'Bouchard', 'Gauthier',
@@ -28,7 +23,6 @@ SELECT
     now() - make_interval(days => 365 + ((numero * 37) % 1095))
 FROM generate_series(1, 500) AS serie(numero);
 
--- Les soldes en CAD sont suffisants pour les achats de demonstration.
 INSERT INTO public.comptes_especes (client_id, solde, devise, date_ouverture)
 SELECT
     client_id,
@@ -38,7 +32,6 @@ SELECT
 FROM public.clients
 WHERE email LIKE 'demo.client.%@finance.test';
 
--- Cours de demonstration en CAD, bases sur des titres cotes au Canada.
 INSERT INTO public.titres (symbole, nom, secteur, devise, cours_actuel)
 VALUES
     ('RY.TO', 'Banque Royale du Canada', 'Finance', 'CAD', 160.00),
@@ -62,8 +55,6 @@ VALUES
     ('NTR.TO', 'Nutrien', 'Materiaux', 'CAD', 75.00),
     ('TECK.B.TO', 'Teck Resources', 'Materiaux', 'CAD', 65.00);
 
--- Genere 40 ordres par client : 20 achats, puis les ventes associees.
--- Les ventes portent sur une quantite inferieure aux achats precedents.
 WITH clients_demo AS (
     SELECT
         client_id,
@@ -123,7 +114,6 @@ FROM ordres
 JOIN titres_demo USING (numero_titre)
 JOIN public.comptes_especes USING (compte_id);
 
--- Calcule les positions restantes et le prix moyen depuis l'historique insere.
 INSERT INTO public.portefeuilles_positions (
     client_id, titre_id, quantite, prix_moyen_achat, date_premier_achat
 )

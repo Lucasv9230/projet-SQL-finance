@@ -13,7 +13,6 @@ async function main() {
   await client.connect();
   console.log('Connecté à Supabase.');
 
-  // Requête 1 de test (recherche transactions d'un client par date)
   const q1 = `
     EXPLAIN (ANALYZE, BUFFERS)
     SELECT transaction_id, titre_id, type, quantite, prix_unitaire, date_transaction
@@ -23,7 +22,6 @@ async function main() {
     ORDER BY date_transaction DESC;
   `;
 
-  // Requête 2 de test (agrégation par titre et date)
   const q2 = `
     EXPLAIN (ANALYZE, BUFFERS)
     SELECT type, sum(quantite) as total_volume, round(avg(prix_unitaire), 2) as prix_moyen
@@ -34,7 +32,6 @@ async function main() {
   `;
 
   console.log('\n--- MESURE AVANT INDEX ---');
-  // Supprimer les index s'ils existent déjà pour une mesure propre avant
   await client.query(`DROP INDEX IF EXISTS public.idx_transactions_client_date;`);
   await client.query(`DROP INDEX IF EXISTS public.idx_transactions_titre_date;`);
 
@@ -87,7 +84,6 @@ async function main() {
   console.log('Vues créées avec succès.');
 
   console.log('\n--- CRÉATION DES RÔLES ET PRIVILÈGES ---');
-  // Ajuster la procédure en SECURITY DEFINER pour que le courtier puisse l'appeler sans droit direct sur transactions
   await client.query(`
     ALTER PROCEDURE public.executer_ordre(bigint, bigint, bigint, text, numeric, bigint) SECURITY DEFINER;
   `);
@@ -152,7 +148,6 @@ async function main() {
   console.log('\nPlan 2 APRÈS index :\n' + planAfter2);
 
   console.log('\n--- TESTS DE PERMISSION SUR LES RÔLES ---');
-  // Test Trader
   try {
     await client.query(`SET ROLE trader_alex;`);
     const tView = await client.query(`SELECT count(*) FROM public.vue_courtier_marche;`);
@@ -168,7 +163,6 @@ async function main() {
     console.log(` Trader Alex bloqué sur comptes_especes : REFUS NORMAL (${e.message})`);
   }
 
-  // Test Auditeur
   try {
     await client.query(`SET ROLE auditeur_claire;`);
     const aView = await client.query(`SELECT count(*) FROM public.vue_audit_transactions;`);

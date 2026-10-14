@@ -1,7 +1,3 @@
-/* ==========================================================================
-   APEX FINANCE · DESIGN SYSTEM (VANILLA CSS)
-   ========================================================================== */
-
 :root {
   --bg-primary: #07090e;
   --bg-secondary: #0d121d;
@@ -58,7 +54,6 @@ body {
   background-attachment: fixed;
 }
 
-/* Scrollbar moderne */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -74,17 +69,12 @@ body {
   background: #334155;
 }
 
-/* ==========================================================================
-   LAYOUT
-   ========================================================================== */
-
 .app-container {
   max-width: 1440px;
   margin: 0 auto;
   padding: 24px 32px 64px 32px;
 }
 
-/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -224,7 +214,6 @@ body {
   color: white;
 }
 
-/* Navigation Tabs */
 .tabs-nav {
   display: flex;
   gap: 8px;
@@ -265,7 +254,6 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Stats Cards Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -356,10 +344,6 @@ body {
 
 .pnl-positive { color: var(--accent-green); font-weight: 600; }
 .pnl-negative { color: var(--accent-red); font-weight: 600; }
-
-/* ==========================================================================
-   PORTFOLIO & TABLE STYLES
-   ========================================================================== */
 
 .card-panel {
   background: var(--bg-card);
@@ -482,10 +466,6 @@ body {
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
-/* ==========================================================================
-   MARKET & TRADING DESK
-   ========================================================================== */
-
 .trading-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -536,7 +516,6 @@ body {
   background: #0f172a;
 }
 
-/* Trading Box (Formulaire d'Ordre) */
 .order-box {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
@@ -691,7 +670,6 @@ body {
   transform: none !important;
 }
 
-/* Actions rapides dans la table */
 .btn-action-small {
   padding: 6px 12px;
   border-radius: var(--radius-sm);
@@ -708,10 +686,6 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
 }
-
-/* ==========================================================================
-   TOASTS & NOTIFICATIONS
-   ========================================================================== */
 
 .toast-container {
   position: fixed;
@@ -748,7 +722,6 @@ body {
   to { transform: translateX(0); opacity: 1; }
 }
 
-/* Section Présentation Projet SQL */
 .demo-box {
   background: rgba(15, 23, 42, 0.5);
   border: 1px solid var(--border-subtle);

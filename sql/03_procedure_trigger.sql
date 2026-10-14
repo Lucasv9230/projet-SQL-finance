@@ -1,5 +1,3 @@
--- Execute after sql/01_schema.sql and sql/02_donnees.sql in Supabase.
-
 CREATE OR REPLACE PROCEDURE public.executer_ordre(
     IN p_client_id bigint,
     IN p_compte_id bigint,
@@ -80,7 +78,6 @@ BEGIN
             USING ERRCODE = '23514';
     END IF;
 
-    -- The title row lock keeps the execution price and currency stable.
     SELECT t.devise, t.cours_actuel
     INTO v_devise_titre, v_cours_actuel
     FROM public.titres AS t
@@ -97,7 +94,6 @@ BEGIN
             USING ERRCODE = '23514';
     END IF;
 
-    -- Never trust a price supplied by a direct INSERT.
     NEW.prix_unitaire := v_cours_actuel;
     v_montant := round(NEW.quantite * NEW.prix_unitaire, 2);
 
